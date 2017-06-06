@@ -79,6 +79,11 @@ var HorizontalScroll = function (_Component) {
       // Establish the bounds. We do this every time b/c it might change.
       var bounds = -(max - win);
 
+      // Detect if we are near reaching the end.
+      if ((max > win) && (bounds - nextState.animValues) > -1) {
+        if (nextProps.onEndReached) nextProps.onEndReached();
+      }
+
       // Logic to hold everything in place
       if (curr >= 1) {
         this.resetMin();
@@ -128,10 +133,10 @@ var HorizontalScroll = function (_Component) {
       var _this3 = this;
 
       var _props = this.props,
-          config = _props.config,
-          style = _props.style;
+        config = _props.config,
+        style = _props.style;
       var width = style.width,
-          height = style.height;
+        height = style.height;
 
       var springConfig = config ? config : _reactMotion.presets.noWobble;
 
@@ -185,12 +190,14 @@ HorizontalScroll.proptypes = {
   reverseScroll: _propTypes2.default.bool,
   pageLock: _propTypes2.default.bool,
   config: _propTypes2.default.object,
-  style: _propTypes2.default.object
+  style: _propTypes2.default.object,
+  onEndReached: _react.PropTypes.func
 };
 
 HorizontalScroll.defaultProps = {
   reverseScroll: false,
   pageLock: false,
   config: null,
-  style: { width: '100%', height: '100%' }
+  style: { width: '100%', height: '100%' },
+  onEndReached: null
 };
